@@ -27,10 +27,18 @@ export const ICChip = ({ ic, onDragEnd }: ICChipProps) => {
 
   const handlePinClick = (pinId: string, e: React.MouseEvent) => {
     e.stopPropagation();
+    const rect = (e.target as HTMLElement).getBoundingClientRect();
+    const point = {
+      x: rect.left + rect.width / 2,
+      y: rect.top + rect.height / 2,
+      componentId: ic.id,
+      pinId: pinId,
+    };
+    
     if (wireStart) {
-      completeWire(ic.id, pinId);
+      completeWire(point);
     } else {
-      startWire(ic.id, pinId);
+      startWire(point);
     }
   };
 

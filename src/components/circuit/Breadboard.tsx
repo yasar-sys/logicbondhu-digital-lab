@@ -14,12 +14,22 @@ export const Breadboard = memo(({ rows = 30, cols = 10 }: BreadboardProps) => {
   const completeWire = useCircuitStore(s => s.completeWire);
   const powerOn = useCircuitStore(s => s.circuit.powerOn);
 
-  const handleHoleClick = (row: number, col: number, section: 'top' | 'bottom') => {
+  const handleHoleClick = (row: number, col: number, section: 'top' | 'bottom', e: React.MouseEvent) => {
+    e.stopPropagation();
     const holeId = `hole-${section}-${row}-${col}`;
+    // Get position relative to the page for wire drawing
+    const rect = (e.target as HTMLElement).getBoundingClientRect();
+    const point = {
+      x: rect.left + rect.width / 2,
+      y: rect.top + rect.height / 2,
+      componentId: 'breadboard',
+      pinId: holeId,
+    };
+    
     if (wireStart) {
-      completeWire('breadboard', holeId);
+      completeWire(point);
     } else {
-      startWire('breadboard', holeId);
+      startWire(point);
     }
   };
 
@@ -30,7 +40,7 @@ export const Breadboard = memo(({ rows = 30, cols = 10 }: BreadboardProps) => {
     return (
       <button
         key={`${section}-${row}-${col}`}
-        onClick={() => handleHoleClick(row, col, section)}
+        onClick={(e) => handleHoleClick(row, col, section, e)}
         className={cn(
           "w-2 h-2 rounded-full transition-all duration-150",
           "bg-gradient-to-b from-zinc-700 to-zinc-900",

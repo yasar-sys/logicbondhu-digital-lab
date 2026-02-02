@@ -5,7 +5,7 @@ import { ICPalette } from '@/components/circuit/ICPalette';
 import { TrainerBoard } from '@/components/circuit/TrainerBoard';
 import { AIAssistant } from '@/components/ai/AIAssistant';
 import { ClockGenerator } from '@/components/circuit/ClockGenerator';
-import { TruthTableDisplay } from '@/components/circuit/TruthTableDisplay';
+import { WirePanel } from '@/components/circuit/WirePanel';
 import { useCircuitStore } from '@/store/circuit-store';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -31,24 +31,28 @@ const Index = () => {
       {/* Main Content */}
       <div className="flex-1 overflow-hidden">
         <ResizablePanelGroup direction="horizontal" className="h-full">
-          {/* Left Panel - IC Palette & Tools */}
+          {/* Left Panel - IC Palette, Wires & Tools */}
           <ResizablePanel defaultSize={18} minSize={14} maxSize={25}>
             <div className="h-full flex flex-col">
               <Tabs defaultValue="components" className="flex-1 flex flex-col">
-                <TabsList className="mx-2 mt-2 grid grid-cols-2">
-                  <TabsTrigger value="components" className="text-xs">ICs</TabsTrigger>
-                  <TabsTrigger value="tools" className="text-xs">Tools</TabsTrigger>
+                <TabsList className="mx-2 mt-2 grid grid-cols-3">
+                  <TabsTrigger value="components" className="text-[10px]">ICs</TabsTrigger>
+                  <TabsTrigger value="wires" className="text-[10px]">Wires</TabsTrigger>
+                  <TabsTrigger value="tools" className="text-[10px]">Tools</TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="components" className="flex-1 p-2 overflow-hidden">
                   <ICPalette />
                 </TabsContent>
                 
+                <TabsContent value="wires" className="flex-1 p-2 overflow-hidden">
+                  <WirePanel />
+                </TabsContent>
+                
                 <TabsContent value="tools" className="flex-1 p-2 overflow-hidden">
                   <ScrollArea className="h-full">
                     <div className="space-y-4">
                       <ClockGenerator />
-                      <TruthTableDisplay />
                     </div>
                   </ScrollArea>
                 </TabsContent>

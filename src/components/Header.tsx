@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Cpu, Github, Heart, User } from 'lucide-react';
+import { Cpu, Heart } from 'lucide-react';
 
 export const Header = () => {
   return (
@@ -20,14 +20,11 @@ export const Header = () => {
           </motion.div>
           <div>
             <h1 className="text-lg font-bold tracking-tight flex items-center gap-1.5">
-              <span className="text-foreground">DLD</span>
-              <span className="text-primary">Trainer</span>
-              <span className="text-xs px-1.5 py-0.5 bg-primary/20 text-primary rounded-md font-medium">
-                Pro
-              </span>
+              <span className="text-foreground">Trainer</span>
+              <span className="text-primary">Board</span>
             </h1>
             <p className="text-[10px] text-muted-foreground -mt-0.5">
-              Digital Logic Design Simulator
+              Digital Logic Simulator
             </p>
           </div>
         </div>

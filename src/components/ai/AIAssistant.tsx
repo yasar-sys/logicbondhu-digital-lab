@@ -17,14 +17,15 @@ interface Message {
 const INITIAL_MESSAGE: Message = {
   id: '1',
   role: 'assistant',
-  content: `হ্যালো! 👋 আমি LogicBondhu, তোমার DLD lab এর AI বন্ধু! 
+  content: `হ্যালো! 👋 আমি LogicBondhu, Trainer Board এর AI বন্ধু! 
 
 আমি তোমাকে digital logic circuits শিখতে সাহায্য করব। তুমি যেকোনো প্রশ্ন করতে পারো - circuit design, IC pinout, truth tables, বা viva preparation!
 
 **Quick tips:**
 - 🔌 Left panel থেকে IC select করো
+- 🔗 Wires tab থেকে jumper wire যোগ করো  
 - ⚡ Power ON করতে ভুলো না!
-- 🔗 Pin এ click করে wire connect করো
+- ❌ Wire/IC remove করতে hover করে X click করো
 
 কোথা থেকে শুরু করতে চাও? 😊`,
   timestamp: new Date(),
