@@ -1,9 +1,9 @@
+@import '@fontsource/noto-sans-bengali/400.css';
+@import '@fontsource/noto-sans-bengali/600.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import '@fontsource/noto-sans-bengali/400.css';
-@import '@fontsource/noto-sans-bengali/600.css';
 
 /* DLD Trainer Board Design System */
 @layer base {
