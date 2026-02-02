@@ -13,8 +13,9 @@ import { PulseSwitchBank } from './PulseSwitch';
 import { BCDDisplayBank } from './BCDDisplay';
 import { Speaker } from './Speaker';
 import { AdapterBank } from './Adapters';
+import { JumperWireDisplay } from './JumperWireDisplay';
 import { cn } from '@/lib/utils';
-import { RotateCcw, Zap, AlertTriangle, User, Maximize2, Minimize2 } from 'lucide-react';
+import { RotateCcw, Zap, AlertTriangle, User, Maximize2, Minimize2, Cable } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
@@ -25,28 +26,38 @@ export const TrainerBoard = () => {
   const addIC = useCircuitStore(s => s.addIC);
   const moveICPosition = useCircuitStore(s => s.moveICPosition);
   const wireStart = useCircuitStore(s => s.wireStart);
+  const isWiringMode = useCircuitStore(s => s.isWiringMode);
+  const startWire = useCircuitStore(s => s.startWire);
+  const completeWire = useCircuitStore(s => s.completeWire);
   const cancelWire = useCircuitStore(s => s.cancelWire);
   const resetCircuit = useCircuitStore(s => s.resetCircuit);
   const simulationResult = useCircuitStore(s => s.simulationResult);
+  const jumperWires = useCircuitStore(s => s.jumperWires);
   const [bcdValues] = useState([0, 0]);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const handleBoardClick = useCallback((e: React.MouseEvent) => {
     if (!boardRef.current) return;
     
-    // Don't place IC if clicking on a component
+    // Don't place IC or wire if clicking on a component
     if ((e.target as HTMLElement).closest('.no-ic-place')) return;
     
     const rect = boardRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const x = e.clientX - rect.left + boardRef.current.scrollLeft;
+    const y = e.clientY - rect.top + boardRef.current.scrollTop;
 
     if (selectedIC) {
       addIC(selectedIC, { x: x - 50, y: y - 40 });
+    } else if (isWiringMode) {
+      if (wireStart) {
+        completeWire({ x, y });
+      } else {
+        startWire({ x, y });
+      }
     } else if (wireStart) {
       cancelWire();
     }
-  }, [selectedIC, addIC, wireStart, cancelWire]);
+  }, [selectedIC, addIC, isWiringMode, wireStart, startWire, completeWire, cancelWire]);
 
   return (
     <div className={cn(
@@ -68,7 +79,7 @@ export const TrainerBoard = () => {
               )}
             </span>
             <span className="text-xs text-muted-foreground font-mono">
-              MCP M21-7000
+              Trainer Board
             </span>
           </div>
         </div>
@@ -77,12 +88,20 @@ export const TrainerBoard = () => {
         <div className="hidden lg:flex items-center">
           <div className="px-6 py-2 rounded-lg bg-gradient-to-r from-zinc-800 to-zinc-700 border border-zinc-600 shadow-lg">
             <span className="text-sm font-bold tracking-wider text-foreground">
-              ANALOG & DIGITAL TRAINING SYSTEM
+              TRAINER BOARD - DIGITAL LOGIC SIMULATOR
             </span>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
+          {/* Wire count */}
+          {jumperWires.length > 0 && (
+            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+              <Cable size={12} />
+              {jumperWires.length}
+            </div>
+          )}
+          
           {simulationResult?.warnings.length ? (
             <div className="flex items-center gap-1 text-yellow-500 text-xs">
               <AlertTriangle size={14} />
@@ -116,7 +135,7 @@ export const TrainerBoard = () => {
         className={cn(
           "relative flex-1 overflow-hidden",
           selectedIC && "cursor-crosshair",
-          wireStart && "cursor-pointer"
+          isWiringMode && "cursor-crosshair",
         )}
         style={{
           background: `
@@ -129,7 +148,7 @@ export const TrainerBoard = () => {
           <div 
             key={i}
             className={cn(
-              "absolute w-4 h-4 rounded-full z-10",
+              "absolute w-4 h-4 rounded-full z-20",
               "bg-gradient-to-br from-zinc-400 to-zinc-600",
               "shadow-[inset_0_1px_2px_rgba(255,255,255,0.3),0_2px_4px_rgba(0,0,0,0.4)]",
               pos
@@ -139,15 +158,30 @@ export const TrainerBoard = () => {
           </div>
         ))}
 
+        {/* Wiring mode indicator */}
+        {isWiringMode && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="absolute top-2 left-1/2 -translate-x-1/2 z-30 px-4 py-1.5 rounded-full bg-primary text-primary-foreground text-xs font-medium flex items-center gap-2"
+          >
+            <Cable size={14} />
+            {wireStart ? 'Click to complete wire' : 'Click to start wire'}
+          </motion.div>
+        )}
+
         <ScrollArea className="h-full">
           <div 
             ref={boardRef}
             onClick={handleBoardClick}
-            className="min-h-full p-4"
+            className="relative min-h-full p-4"
             style={{ minWidth: '1200px', minHeight: '800px' }}
           >
+            {/* Jumper Wires Layer */}
+            <JumperWireDisplay boardRef={boardRef} />
+
             {/* Top Row - LED Displays and Controls */}
-            <div className="flex gap-3 mb-4">
+            <div className="flex gap-3 mb-4 relative z-5">
               {/* Left column - Power & Potentiometers */}
               <div className="w-48 space-y-3 no-ic-place">
                 <DCPowerSupply />
@@ -189,7 +223,7 @@ export const TrainerBoard = () => {
             </div>
 
             {/* Middle Row - Function Generator, Breadboard, Controls */}
-            <div className="flex gap-3 mb-4">
+            <div className="flex gap-3 mb-4 relative z-5">
               {/* Left - Function Generator */}
               <div className="w-48 no-ic-place">
                 <FunctionGenerator />
@@ -228,7 +262,7 @@ export const TrainerBoard = () => {
             </div>
 
             {/* Bottom Row - Data Switches */}
-            <div className="no-ic-place">
+            <div className="no-ic-place relative z-5">
               <div className="bg-gradient-to-b from-zinc-800 to-zinc-900 rounded-lg p-4 border border-zinc-700">
                 <div className="text-[8px] text-zinc-500 font-semibold tracking-wider mb-3 text-center">
                   DATA SWITCHES
@@ -256,10 +290,9 @@ export const TrainerBoard = () => {
       {/* Footer credit bar */}
       <div className="flex items-center justify-between px-4 py-1.5 bg-gradient-to-r from-zinc-900 via-zinc-800 to-zinc-900 border-t border-zinc-700">
         <div className="flex items-center gap-3 text-[10px] text-zinc-500">
-          <span className="font-mono font-bold text-zinc-400">MCP</span>
-          <span>M21-7000</span>
+          <span className="font-mono font-bold text-primary">Trainer Board</span>
           <span className="hidden md:inline">|</span>
-          <span className="hidden md:inline">Virtual DLD Trainer Board</span>
+          <span className="hidden md:inline">Digital Logic Simulator</span>
         </div>
         <div className="flex items-center gap-1.5 text-[10px]">
           <User size={10} className="text-primary" />

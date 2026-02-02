@@ -127,11 +127,11 @@ export const SplashScreen = ({ onComplete }: SplashScreenProps) => {
           className="mb-4"
         >
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-2">
-            <span className="text-foreground">DLD</span>
-            <span className="text-primary ml-2">Trainer</span>
+            <span className="text-foreground">Trainer</span>
+            <span className="text-primary ml-2">Board</span>
           </h1>
           <p className="text-lg text-muted-foreground">
-            Digital Logic Design Simulator
+            Digital Logic Simulator
           </p>
         </motion.div>
 
