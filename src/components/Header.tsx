@@ -1,23 +1,30 @@
 import { motion } from 'framer-motion';
-import { Cpu, Github, Heart } from 'lucide-react';
+import { Cpu, Github, Heart, User } from 'lucide-react';
 
 export const Header = () => {
   return (
     <motion.header
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className="border-b border-border bg-card/50 backdrop-blur-sm"
+      className="border-b border-border bg-gradient-to-r from-card via-card/95 to-card backdrop-blur-sm"
     >
       <div className="container mx-auto px-4 h-14 flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-primary/20 flex items-center justify-center">
-            <Cpu size={20} className="text-primary" />
-          </div>
+          <motion.div 
+            className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center border border-primary/30"
+            whileHover={{ scale: 1.05, rotate: 5 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Cpu size={22} className="text-primary" />
+          </motion.div>
           <div>
-            <h1 className="text-lg font-bold tracking-tight">
-              DLD Trainer
-              <span className="text-primary ml-1">Board</span>
+            <h1 className="text-lg font-bold tracking-tight flex items-center gap-1.5">
+              <span className="text-foreground">DLD</span>
+              <span className="text-primary">Trainer</span>
+              <span className="text-xs px-1.5 py-0.5 bg-primary/20 text-primary rounded-md font-medium">
+                Pro
+              </span>
             </h1>
             <p className="text-[10px] text-muted-foreground -mt-0.5">
               Digital Logic Design Simulator
@@ -25,12 +32,20 @@ export const Header = () => {
           </div>
         </div>
 
-        {/* Center - Made with love badge */}
-        <div className="hidden md:flex items-center gap-2 text-xs text-muted-foreground">
-          <span>Made with</span>
-          <Heart size={12} className="text-red-500 fill-red-500 animate-pulse" />
-          <span>for CSE students</span>
-        </div>
+        {/* Center - Developer credit */}
+        <motion.div 
+          className="hidden md:flex items-center gap-3 px-4 py-1.5 rounded-full bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.3 }}
+        >
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <span>Made with</span>
+            <Heart size={12} className="text-red-500 fill-red-500 animate-pulse" />
+            <span>by</span>
+          </div>
+          <span className="text-sm font-semibold text-foreground">Samin Yasar</span>
+        </motion.div>
 
         {/* Right side */}
         <div className="flex items-center gap-3">

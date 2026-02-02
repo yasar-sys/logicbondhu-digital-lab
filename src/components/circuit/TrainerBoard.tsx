@@ -5,8 +5,9 @@ import { ICChip } from './ICChip';
 import { ToggleSwitchComponent } from './ToggleSwitch';
 import { LEDComponent } from './LED';
 import { PowerButton } from './PowerButton';
+import { Breadboard } from './Breadboard';
 import { cn } from '@/lib/utils';
-import { RotateCcw, Zap, AlertTriangle } from 'lucide-react';
+import { RotateCcw, Zap, AlertTriangle, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export const TrainerBoard = () => {
@@ -37,14 +38,14 @@ export const TrainerBoard = () => {
   return (
     <div className="flex flex-col h-full">
       {/* Board Header */}
-      <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-card/50">
+      <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-gradient-to-r from-card/80 to-card/40 backdrop-blur-sm">
         <div className="flex items-center gap-3">
           <PowerButton />
           <div className="flex flex-col">
             <span className="text-sm font-semibold">
               {circuit.powerOn ? (
                 <span className="text-primary flex items-center gap-1">
-                  <Zap size={14} /> POWER ON
+                  <Zap size={14} className="animate-pulse" /> POWER ON
                 </span>
               ) : (
                 <span className="text-muted-foreground">POWER OFF</span>
@@ -52,6 +53,15 @@ export const TrainerBoard = () => {
             </span>
             <span className="text-xs text-muted-foreground">
               {circuit.name}
+            </span>
+          </div>
+        </div>
+
+        {/* Center title */}
+        <div className="hidden md:flex items-center gap-2">
+          <div className="px-4 py-1.5 rounded-full bg-gradient-to-r from-primary/20 to-secondary/20 border border-primary/30">
+            <span className="text-xs font-semibold tracking-wide">
+              ANALOG & DIGITAL TRAINING SYSTEM
             </span>
           </div>
         </div>
@@ -81,14 +91,37 @@ export const TrainerBoard = () => {
         ref={boardRef}
         onClick={handleBoardClick}
         className={cn(
-          "relative flex-1 overflow-hidden pcb-texture",
+          "relative flex-1 overflow-auto",
           selectedIC && "cursor-crosshair",
           wireStart && "cursor-pointer"
         )}
+        style={{
+          background: `
+            linear-gradient(135deg, hsl(0 60% 25%) 0%, hsl(0 50% 18%) 100%)
+          `,
+        }}
       >
-        {/* LED Row */}
-        <div className="absolute top-4 left-0 right-0 flex justify-center">
-          <div className="bg-card/80 backdrop-blur-sm rounded-lg px-4 py-3 border border-border">
+        {/* Corner screws */}
+        {['top-3 left-3', 'top-3 right-3', 'bottom-3 left-3', 'bottom-3 right-3'].map((pos, i) => (
+          <div 
+            key={i}
+            className={cn(
+              "absolute w-4 h-4 rounded-full",
+              "bg-gradient-to-br from-zinc-400 to-zinc-600",
+              "shadow-[inset_0_1px_2px_rgba(255,255,255,0.3),0_2px_4px_rgba(0,0,0,0.4)]",
+              pos
+            )}
+          >
+            <div className="absolute inset-1 rounded-full bg-gradient-to-br from-zinc-500 to-zinc-700" />
+          </div>
+        ))}
+
+        {/* LED Display Row - Top */}
+        <div className="absolute top-6 left-1/2 -translate-x-1/2">
+          <div className="bg-gradient-to-b from-zinc-800 to-zinc-900 rounded-lg px-6 py-4 border border-zinc-700 shadow-lg">
+            <div className="text-[8px] text-zinc-500 text-center mb-2 font-semibold tracking-wider">
+              LED DATA DISPLAYS
+            </div>
             <div className="flex items-center gap-4">
               {circuit.leds.map(led => (
                 <LEDComponent
@@ -103,6 +136,11 @@ export const TrainerBoard = () => {
           </div>
         </div>
 
+        {/* Breadboard - Center */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <Breadboard rows={30} cols={10} />
+        </div>
+
         {/* Placed ICs */}
         {circuit.ics.map(ic => (
           <ICChip
@@ -112,17 +150,12 @@ export const TrainerBoard = () => {
           />
         ))}
 
-        {/* Wire visualization would go here */}
-        <svg className="absolute inset-0 pointer-events-none">
-          {circuit.wires.map(wire => {
-            // Simplified wire rendering - would need proper position calculation
-            return null;
-          })}
-        </svg>
-
-        {/* Switch Row */}
-        <div className="absolute bottom-4 left-0 right-0 flex justify-center">
-          <div className="bg-card/80 backdrop-blur-sm rounded-lg px-4 py-3 border border-border">
+        {/* Switch Row - Bottom */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2">
+          <div className="bg-gradient-to-b from-zinc-800 to-zinc-900 rounded-lg px-6 py-4 border border-zinc-700 shadow-lg">
+            <div className="text-[8px] text-zinc-500 text-center mb-2 font-semibold tracking-wider">
+              DATA SWITCHES
+            </div>
             <div className="flex items-center gap-3">
               {circuit.switches.map(sw => (
                 <ToggleSwitchComponent
@@ -141,7 +174,7 @@ export const TrainerBoard = () => {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-card/90 backdrop-blur-sm px-4 py-2 rounded-lg border border-primary text-sm text-center pointer-events-none"
+            className="absolute top-24 left-1/2 -translate-x-1/2 bg-card/95 backdrop-blur-sm px-4 py-2 rounded-lg border border-primary text-sm text-center pointer-events-none z-20"
           >
             <span className="text-primary font-medium">Click anywhere</span> to place the IC
           </motion.div>
@@ -151,24 +184,41 @@ export const TrainerBoard = () => {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-card/90 backdrop-blur-sm px-4 py-2 rounded-lg border border-accent text-sm text-center pointer-events-none"
+            className="absolute top-24 left-1/2 -translate-x-1/2 bg-card/95 backdrop-blur-sm px-4 py-2 rounded-lg border border-accent text-sm text-center pointer-events-none z-20"
           >
             <span className="text-accent font-medium">Click a pin</span> to connect, or click elsewhere to cancel
           </motion.div>
         )}
 
-        {/* Empty state */}
+        {/* Empty state hint */}
         {circuit.ics.length === 0 && !selectedIC && (
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-            <div className="text-4xl mb-3">🔧</div>
-            <h3 className="text-lg font-semibold text-foreground mb-1">
-              Start Building!
-            </h3>
-            <p className="text-sm text-muted-foreground max-w-xs">
-              Select an IC from the palette on the left, then click on the board to place it.
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="absolute top-24 left-4 bg-card/90 backdrop-blur-sm rounded-lg p-3 border border-border max-w-[200px] z-10"
+          >
+            <div className="text-2xl mb-2">💡</div>
+            <h4 className="text-sm font-semibold mb-1">Get Started</h4>
+            <p className="text-xs text-muted-foreground">
+              Select an IC from the left panel and click on the board to place it!
             </p>
-          </div>
+          </motion.div>
         )}
+      </div>
+
+      {/* Footer credit bar */}
+      <div className="flex items-center justify-between px-4 py-1.5 bg-gradient-to-r from-zinc-900 to-zinc-800 border-t border-zinc-700">
+        <div className="flex items-center gap-2 text-[10px] text-zinc-500">
+          <span className="font-mono">M21-7000</span>
+          <span className="hidden md:inline">|</span>
+          <span className="hidden md:inline">Virtual DLD Trainer Board</span>
+        </div>
+        <div className="flex items-center gap-1.5 text-[10px]">
+          <User size={10} className="text-primary" />
+          <span className="text-zinc-400">Developed by</span>
+          <span className="font-semibold text-primary">Samin Yasar</span>
+        </div>
       </div>
     </div>
   );

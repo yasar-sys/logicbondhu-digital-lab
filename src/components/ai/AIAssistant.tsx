@@ -131,8 +131,8 @@ export const AIAssistant = () => {
       </div>
 
       {/* Messages */}
-      <ScrollArea className="flex-1 py-3" ref={scrollRef}>
-        <div className="space-y-3 pr-2">
+      <ScrollArea className="flex-1 py-3">
+        <div className="space-y-3 pr-2" ref={scrollRef}>
           <AnimatePresence>
             {messages.map((message) => (
               <motion.div

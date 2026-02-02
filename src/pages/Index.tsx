@@ -10,16 +10,21 @@ import { useCircuitStore } from '@/store/circuit-store';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Heart, User } from 'lucide-react';
 
 const Index = () => {
   const showAIPanel = useCircuitStore(s => s.showAIPanel);
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-background">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="flex flex-col h-screen overflow-hidden bg-background"
+    >
       <Header />
       
       {/* Learning Mode Bar */}
-      <div className="border-b border-border bg-card/30 px-4 py-2 flex items-center justify-center">
+      <div className="border-b border-border bg-gradient-to-r from-card/50 via-card/30 to-card/50 px-4 py-2 flex items-center justify-center">
         <LearningModeSelector />
       </div>
 
@@ -56,8 +61,9 @@ const Index = () => {
           {/* Center Panel - Trainer Board */}
           <ResizablePanel defaultSize={showAIPanel ? 50 : 80}>
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
               className="h-full"
             >
               <TrainerBoard />
@@ -84,7 +90,7 @@ const Index = () => {
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.3 }}
-        className="border-t border-border bg-card/50 backdrop-blur-sm px-4 py-1.5 flex items-center justify-between text-[10px] text-muted-foreground"
+        className="border-t border-border bg-gradient-to-r from-card/80 via-card/60 to-card/80 backdrop-blur-sm px-4 py-1.5 flex items-center justify-between text-[10px] text-muted-foreground"
       >
         <div className="flex items-center gap-4">
           <span className="flex items-center gap-1">
@@ -92,14 +98,19 @@ const Index = () => {
             Ready
           </span>
           <span>🔌 14 ICs available</span>
-          <span>📚 CSE-1201 aligned</span>
+          <span className="hidden md:inline">📚 CSE-1201 aligned</span>
         </div>
         <div className="flex items-center gap-4">
           <span className="hidden md:inline">⌨️ Space = Power | R = Reset</span>
-          <span className="text-primary font-medium">DLD Trainer v1.0</span>
+          <div className="flex items-center gap-1.5">
+            <Heart size={10} className="text-red-500 fill-red-500" />
+            <span>by</span>
+            <span className="font-semibold text-primary">Samin Yasar</span>
+          </div>
+          <span className="text-primary font-medium">v1.0</span>
         </div>
       </motion.div>
-    </div>
+    </motion.div>
   );
 };
 
