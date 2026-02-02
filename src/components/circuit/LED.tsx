@@ -14,36 +14,30 @@ export const LEDComponent = ({ id, label, color, state }: LEDProps) => {
   const isOn = state === 1 && powerOn;
 
   return (
-    <div className="flex flex-col items-center gap-1">
-      <span className="text-[10px] font-mono text-muted-foreground">{label}</span>
+    <div className="flex flex-col items-center gap-0.5">
+      <span className="text-[7px] font-mono text-zinc-500">{label}</span>
+      
       <motion.div
         className={cn(
-          "led",
+          "w-3 h-3 rounded-full transition-all duration-150",
+          "border border-zinc-600",
           isOn ? (
-            color === 'red' ? 'led-on-red' :
-            color === 'green' ? 'led-on-green' :
-            'bg-led-yellow'
-          ) : 'led-off'
+            color === 'red' 
+              ? 'bg-red-500 shadow-[0_0_8px_#ef4444,0_0_16px_#ef4444]' 
+              : color === 'green' 
+                ? 'bg-green-500 shadow-[0_0_8px_#22c55e,0_0_16px_#22c55e]'
+                : 'bg-yellow-500 shadow-[0_0_8px_#eab308,0_0_16px_#eab308]'
+          ) : 'bg-zinc-800'
         )}
         animate={{
-          scale: isOn ? [1, 1.05, 1] : 1,
+          scale: isOn ? [1, 1.1, 1] : 1,
         }}
         transition={{
-          duration: 0.5,
+          duration: 0.3,
           repeat: isOn ? Infinity : 0,
           ease: 'easeInOut',
         }}
       />
-      <span className={cn(
-        "text-[10px] font-mono font-bold",
-        isOn ? (
-          color === 'red' ? 'text-red-500' :
-          color === 'green' ? 'text-green-500' :
-          'text-yellow-500'
-        ) : 'text-muted-foreground'
-      )}>
-        {state}
-      </span>
     </div>
   );
 };

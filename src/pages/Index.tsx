@@ -10,7 +10,7 @@ import { useCircuitStore } from '@/store/circuit-store';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Heart, User } from 'lucide-react';
+import { Heart } from 'lucide-react';
 
 const Index = () => {
   const showAIPanel = useCircuitStore(s => s.showAIPanel);
@@ -32,11 +32,11 @@ const Index = () => {
       <div className="flex-1 overflow-hidden">
         <ResizablePanelGroup direction="horizontal" className="h-full">
           {/* Left Panel - IC Palette & Tools */}
-          <ResizablePanel defaultSize={20} minSize={15} maxSize={28}>
+          <ResizablePanel defaultSize={18} minSize={14} maxSize={25}>
             <div className="h-full flex flex-col">
               <Tabs defaultValue="components" className="flex-1 flex flex-col">
                 <TabsList className="mx-2 mt-2 grid grid-cols-2">
-                  <TabsTrigger value="components" className="text-xs">Components</TabsTrigger>
+                  <TabsTrigger value="components" className="text-xs">ICs</TabsTrigger>
                   <TabsTrigger value="tools" className="text-xs">Tools</TabsTrigger>
                 </TabsList>
                 
@@ -59,7 +59,7 @@ const Index = () => {
           <ResizableHandle withHandle />
 
           {/* Center Panel - Trainer Board */}
-          <ResizablePanel defaultSize={showAIPanel ? 50 : 80}>
+          <ResizablePanel defaultSize={showAIPanel ? 55 : 82}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -75,7 +75,7 @@ const Index = () => {
               <ResizableHandle withHandle />
 
               {/* Right Panel - AI Assistant */}
-              <ResizablePanel defaultSize={30} minSize={22} maxSize={40}>
+              <ResizablePanel defaultSize={27} minSize={20} maxSize={35}>
                 <div className="h-full p-2">
                   <AIAssistant />
                 </div>
@@ -97,17 +97,19 @@ const Index = () => {
             <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
             Ready
           </span>
-          <span>🔌 14 ICs available</span>
-          <span className="hidden md:inline">📚 CSE-1201 aligned</span>
+          <span>🔌 14 ICs</span>
+          <span>📊 16 Switches</span>
+          <span>💡 16 LEDs</span>
+          <span className="hidden md:inline">📚 CSE-1201</span>
         </div>
         <div className="flex items-center gap-4">
-          <span className="hidden md:inline">⌨️ Space = Power | R = Reset</span>
+          <span className="hidden lg:inline">⌨️ Space = Power | R = Reset</span>
           <div className="flex items-center gap-1.5">
             <Heart size={10} className="text-red-500 fill-red-500" />
             <span>by</span>
             <span className="font-semibold text-primary">Samin Yasar</span>
           </div>
-          <span className="text-primary font-medium">v1.0</span>
+          <span className="text-primary font-medium">v2.0</span>
         </div>
       </motion.div>
     </motion.div>
