@@ -20,12 +20,13 @@ export const createEmptyCircuit = (name: string = 'Untitled Circuit'): Circuit =
 
 const createDefaultSwitches = (): ToggleSwitch[] => {
   const switches: ToggleSwitch[] = [];
-  for (let i = 0; i < 8; i++) {
+  // SW0-SW15 (16 data switches like M21-7000)
+  for (let i = 0; i < 16; i++) {
     switches.push({
       id: `switch-${i}`,
-      position: { x: 60 + i * 50, y: 520 },
+      position: { x: 60 + i * 40, y: 520 },
       state: 0,
-      label: `S${i}`,
+      label: `SW${i}`,
     });
   }
   return switches;
@@ -33,11 +34,12 @@ const createDefaultSwitches = (): ToggleSwitch[] => {
 
 const createDefaultLEDs = (): LED[] => {
   const leds: LED[] = [];
-  for (let i = 0; i < 8; i++) {
+  // 16 LEDs: 8 HIGH (green), 8 LOW (red) like M21-7000
+  for (let i = 0; i < 16; i++) {
     leds.push({
       id: `led-${i}`,
-      position: { x: 60 + i * 50, y: 60 },
-      color: i < 4 ? 'red' : 'green',
+      position: { x: 60 + i * 40, y: 60 },
+      color: i < 8 ? 'green' : 'red',
       state: 0,
       label: `L${i}`,
     });
