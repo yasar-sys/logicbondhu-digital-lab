@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Cpu, Heart } from 'lucide-react';
+import { CircuitManager } from './circuit/CircuitManager';
 
 export const Header = () => {
   return (
@@ -46,6 +47,7 @@ export const Header = () => {
 
         {/* Right side */}
         <div className="flex items-center gap-3">
+          <CircuitManager />
           <div className="mode-badge">
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
             <span className="bengali">বাংলা</span> Supported
