@@ -15,7 +15,7 @@ import { Speaker } from './Speaker';
 import { AdapterBank } from './Adapters';
 import { JumperWireDisplay } from './JumperWireDisplay';
 import { cn } from '@/lib/utils';
-import { RotateCcw, Zap, AlertTriangle, User, Maximize2, Minimize2, Cable } from 'lucide-react';
+import { RotateCcw, Zap, AlertTriangle, User, Maximize2, Minimize2, Cable, ZoomIn, ZoomOut, RotateCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
@@ -35,6 +35,11 @@ export const TrainerBoard = () => {
   const jumperWires = useCircuitStore(s => s.jumperWires);
   const [bcdValues] = useState([0, 0]);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [zoom, setZoom] = useState(0.85); // Default zoom level
+
+  const handleZoomIn = () => setZoom(prev => Math.min(prev + 0.1, 1.5));
+  const handleZoomOut = () => setZoom(prev => Math.max(prev - 0.1, 0.4));
+  const handleZoomReset = () => setZoom(0.85);
 
   const handleBoardClick = useCallback((e: React.MouseEvent) => {
     if (!boardRef.current) return;
@@ -108,6 +113,35 @@ export const TrainerBoard = () => {
               {simulationResult.warnings.length}
             </div>
           ) : null}
+
+          {/* Zoom Controls */}
+          <div className="flex items-center gap-1 border border-border rounded-md bg-background/50 px-1">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleZoomOut}
+              className="h-7 w-7"
+              title="Zoom Out"
+            >
+              <ZoomOut size={14} />
+            </Button>
+            <button 
+              onClick={handleZoomReset}
+              className="text-[10px] font-mono w-10 text-center hover:text-primary transition-colors"
+              title="Reset Zoom"
+            >
+              {Math.round(zoom * 100)}%
+            </button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleZoomIn}
+              className="h-7 w-7"
+              title="Zoom In"
+            >
+              <ZoomIn size={14} />
+            </Button>
+          </div>
           
           <Button
             variant="ghost"
@@ -174,8 +208,14 @@ export const TrainerBoard = () => {
           <div 
             ref={boardRef}
             onClick={handleBoardClick}
-            className="relative min-h-full p-4"
-            style={{ minWidth: '1200px', minHeight: '800px' }}
+            className="relative min-h-full p-4 origin-top-left transition-transform duration-200"
+            style={{ 
+              minWidth: '1200px', 
+              minHeight: '800px',
+              transform: `scale(${zoom})`,
+              transformOrigin: 'top left',
+              width: `${100 / zoom}%`,
+            }}
           >
             {/* Jumper Wires Layer */}
             <JumperWireDisplay boardRef={boardRef} />
