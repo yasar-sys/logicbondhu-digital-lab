@@ -57,33 +57,63 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // Custom DLD Colors
+        pcb: "hsl(var(--pcb))",
+        "pcb-trace": "hsl(var(--pcb-trace))",
+        copper: "hsl(var(--copper))",
+        "led-red": "hsl(var(--led-red))",
+        "led-green": "hsl(var(--led-green))",
+        "led-yellow": "hsl(var(--led-yellow))",
+        "led-off": "hsl(var(--led-off))",
+        "ic-body": "hsl(var(--ic-body))",
+        "ic-pin": "hsl(var(--ic-pin))",
+        "wire-active": "hsl(var(--wire-active))",
+        "wire-inactive": "hsl(var(--wire-inactive))",
+        "switch-on": "hsl(var(--switch-on))",
+        "switch-off": "hsl(var(--switch-off))",
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      fontFamily: {
+        bengali: ["'Noto Sans Bengali'", "sans-serif"],
+        mono: ["'JetBrains Mono'", "'Fira Code'", "monospace"],
+      },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        "pulse-glow": {
+          "0%, 100%": { opacity: "1", filter: "brightness(1)" },
+          "50%": { opacity: "0.8", filter: "brightness(1.2)" },
+        },
+        "float": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-4px)" },
+        },
+        "circuit-flow": {
+          "0%": { strokeDashoffset: "20" },
+          "100%": { strokeDashoffset: "0" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "pulse-glow": "pulse-glow 2s ease-in-out infinite",
+        "float": "float 3s ease-in-out infinite",
+        "circuit-flow": "circuit-flow 1s linear infinite",
+      },
+      boxShadow: {
+        "glow-green": "0 0 20px hsl(142 90% 50% / 0.5)",
+        "glow-red": "0 0 20px hsl(0 90% 50% / 0.5)",
+        "glow-blue": "0 0 20px hsl(200 100% 60% / 0.5)",
       },
     },
   },
