@@ -1,5 +1,5 @@
 import { useRef, useCallback, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useCircuitStore } from '@/store/circuit-store';
 import { ICChip } from './ICChip';
 import { ToggleSwitchComponent } from './ToggleSwitch';
@@ -14,10 +14,14 @@ import { BCDDisplayBank } from './BCDDisplay';
 import { Speaker } from './Speaker';
 import { AdapterBank } from './Adapters';
 import { JumperWireDisplay } from './JumperWireDisplay';
+import { ICPalette } from './ICPalette';
+import { WirePanel } from './WirePanel';
+import { ClockGenerator } from './ClockGenerator';
 import { cn } from '@/lib/utils';
-import { RotateCcw, Zap, AlertTriangle, User, Maximize2, Minimize2, Cable, ZoomIn, ZoomOut, RotateCw } from 'lucide-react';
+import { RotateCcw, Zap, AlertTriangle, User, Maximize2, Minimize2, Cable, ZoomIn, ZoomOut, Cpu, Wrench, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export const TrainerBoard = () => {
   const boardRef = useRef<HTMLDivElement>(null);
@@ -36,6 +40,7 @@ export const TrainerBoard = () => {
   const [bcdValues] = useState([0, 0]);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [zoom, setZoom] = useState(0.85); // Default zoom level
+  const [showFullscreenPanel, setShowFullscreenPanel] = useState(true);
 
   const handleZoomIn = () => setZoom(prev => Math.min(prev + 0.1, 1.5));
   const handleZoomOut = () => setZoom(prev => Math.max(prev - 0.1, 0.4));
@@ -203,6 +208,83 @@ export const TrainerBoard = () => {
             {wireStart ? 'Click to complete wire' : 'Click to start wire'}
           </motion.div>
         )}
+
+        {/* Fullscreen floating panel for ICs, Wires, Tools */}
+        <AnimatePresence>
+          {isFullscreen && (
+            <>
+              {/* Toggle button when panel is hidden */}
+              {!showFullscreenPanel && (
+                <motion.button
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  onClick={() => setShowFullscreenPanel(true)}
+                  className="absolute top-1/2 left-0 -translate-y-1/2 z-40 bg-card/95 backdrop-blur-sm border border-border rounded-r-lg p-2 hover:bg-accent transition-colors"
+                >
+                  <ChevronRight size={16} />
+                </motion.button>
+              )}
+
+              {/* Floating panel */}
+              {showFullscreenPanel && (
+                <motion.div
+                  initial={{ opacity: 0, x: -100 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -100 }}
+                  className="absolute top-2 left-2 bottom-2 w-56 z-40 bg-card/95 backdrop-blur-sm border border-border rounded-lg shadow-xl flex flex-col overflow-hidden"
+                >
+                  {/* Panel header */}
+                  <div className="flex items-center justify-between px-3 py-2 border-b border-border bg-muted/50">
+                    <span className="text-xs font-semibold">Components</span>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => setShowFullscreenPanel(false)}
+                      className="h-6 w-6"
+                    >
+                      <ChevronLeft size={14} />
+                    </Button>
+                  </div>
+
+                  {/* Tabs content */}
+                  <Tabs defaultValue="ics" className="flex-1 flex flex-col overflow-hidden">
+                    <TabsList className="mx-2 mt-2 grid grid-cols-3">
+                      <TabsTrigger value="ics" className="text-[10px]">
+                        <Cpu size={12} className="mr-1" />
+                        ICs
+                      </TabsTrigger>
+                      <TabsTrigger value="wires" className="text-[10px]">
+                        <Cable size={12} className="mr-1" />
+                        Wires
+                      </TabsTrigger>
+                      <TabsTrigger value="tools" className="text-[10px]">
+                        <Wrench size={12} className="mr-1" />
+                        Tools
+                      </TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="ics" className="flex-1 p-2 overflow-hidden">
+                      <ICPalette />
+                    </TabsContent>
+                    
+                    <TabsContent value="wires" className="flex-1 p-2 overflow-hidden">
+                      <WirePanel />
+                    </TabsContent>
+                    
+                    <TabsContent value="tools" className="flex-1 p-2 overflow-hidden">
+                      <ScrollArea className="h-full">
+                        <div className="space-y-4">
+                          <ClockGenerator />
+                        </div>
+                      </ScrollArea>
+                    </TabsContent>
+                  </Tabs>
+                </motion.div>
+              )}
+            </>
+          )}
+        </AnimatePresence>
 
         <ScrollArea className="h-full">
           <div 
