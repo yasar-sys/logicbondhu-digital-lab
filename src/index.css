@@ -2,95 +2,78 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+@import '@fontsource/noto-sans-bengali/400.css';
+@import '@fontsource/noto-sans-bengali/600.css';
 
+/* DLD Trainer Board Design System */
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Lab Dark Theme */
+    --background: 220 20% 8%;
+    --foreground: 210 20% 95%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 220 18% 12%;
+    --card-foreground: 210 20% 95%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 220 18% 10%;
+    --popover-foreground: 210 20% 95%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* PCB Green - Primary */
+    --primary: 142 50% 45%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Circuit Blue - Secondary */
+    --secondary: 210 80% 55%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted grays */
+    --muted: 220 15% 18%;
+    --muted-foreground: 220 10% 60%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Interactive Blue - Accent */
+    --accent: 200 90% 50%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Error Red */
+    --destructive: 0 70% 55%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Borders */
+    --border: 220 15% 22%;
+    --input: 220 15% 20%;
+    --ring: 142 50% 45%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
+    /* Custom Colors */
+    --pcb: 142 40% 20%;
+    --pcb-trace: 142 45% 35%;
+    --copper: 35 70% 50%;
+    --led-red: 0 90% 50%;
+    --led-green: 142 90% 50%;
+    --led-yellow: 45 100% 55%;
+    --led-off: 0 0% 20%;
+    --ic-body: 220 10% 15%;
+    --ic-pin: 45 30% 60%;
+    --wire-active: 200 100% 60%;
+    --wire-inactive: 220 10% 40%;
+    --switch-on: 142 80% 50%;
+    --switch-off: 0 0% 30%;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Sidebar */
+    --sidebar-background: 220 18% 10%;
+    --sidebar-foreground: 210 20% 90%;
+    --sidebar-primary: 142 50% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 15% 18%;
+    --sidebar-accent-foreground: 210 20% 95%;
+    --sidebar-border: 220 15% 22%;
+    --sidebar-ring: 142 50% 45%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --background: 220 20% 8%;
+    --foreground: 210 20% 95%;
   }
 }
 
@@ -100,6 +83,238 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', 'Noto Sans Bengali', system-ui, sans-serif;
+  }
+
+  .bengali {
+    font-family: 'Noto Sans Bengali', sans-serif;
+  }
+}
+
+@layer components {
+  /* PCB Board Texture */
+  .pcb-texture {
+    background: 
+      radial-gradient(circle at 2px 2px, hsl(var(--pcb-trace) / 0.3) 1px, transparent 1px),
+      linear-gradient(135deg, hsl(var(--pcb)) 0%, hsl(142 35% 15%) 100%);
+    background-size: 8px 8px, 100% 100%;
+  }
+
+  /* IC Chip Styling */
+  .ic-chip {
+    @apply relative bg-[hsl(var(--ic-body))] rounded-sm shadow-lg;
+    background: linear-gradient(
+      180deg,
+      hsl(220 10% 18%) 0%,
+      hsl(220 10% 12%) 50%,
+      hsl(220 10% 15%) 100%
+    );
+    box-shadow: 
+      0 4px 6px -1px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .ic-chip::before {
+    content: '';
+    @apply absolute top-1 left-1/2 -translate-x-1/2 w-2 h-1 rounded-full;
+    background: hsl(220 10% 25%);
+  }
+
+  .ic-pin {
+    @apply w-1.5 h-3 rounded-sm;
+    background: linear-gradient(
+      180deg,
+      hsl(45 40% 70%) 0%,
+      hsl(45 30% 50%) 100%
+    );
+  }
+
+  /* LED Styling */
+  .led {
+    @apply w-4 h-4 rounded-full transition-all duration-150;
+    box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .led-on-red {
+    background: radial-gradient(circle at 30% 30%, hsl(0 100% 70%), hsl(0 90% 50%));
+    box-shadow: 
+      0 0 10px hsl(0 90% 50% / 0.8),
+      0 0 20px hsl(0 90% 50% / 0.4),
+      inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .led-on-green {
+    background: radial-gradient(circle at 30% 30%, hsl(142 100% 70%), hsl(142 90% 50%));
+    box-shadow: 
+      0 0 10px hsl(142 90% 50% / 0.8),
+      0 0 20px hsl(142 90% 50% / 0.4),
+      inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .led-off {
+    background: radial-gradient(circle at 30% 30%, hsl(0 0% 30%), hsl(0 0% 15%));
+  }
+
+  /* Toggle Switch */
+  .toggle-switch {
+    @apply relative w-8 h-14 rounded-md cursor-pointer transition-all duration-200;
+    background: linear-gradient(
+      180deg,
+      hsl(220 10% 25%) 0%,
+      hsl(220 10% 18%) 100%
+    );
+    box-shadow: 
+      inset 0 2px 4px rgba(0, 0, 0, 0.3),
+      0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  .toggle-switch-handle {
+    @apply absolute left-1/2 -translate-x-1/2 w-6 h-5 rounded transition-all duration-200;
+    background: linear-gradient(
+      180deg,
+      hsl(0 0% 60%) 0%,
+      hsl(0 0% 45%) 100%
+    );
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Wire Connection */
+  .wire {
+    @apply stroke-2 fill-none transition-all duration-200;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .wire-active {
+    stroke: hsl(var(--wire-active));
+    filter: drop-shadow(0 0 4px hsl(var(--wire-active) / 0.6));
+  }
+
+  .wire-inactive {
+    stroke: hsl(var(--wire-inactive));
+  }
+
+  /* Connection Point */
+  .connection-point {
+    @apply w-3 h-3 rounded-full cursor-pointer transition-all duration-200;
+    background: hsl(var(--copper));
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+
+  .connection-point:hover {
+    transform: scale(1.3);
+    box-shadow: 0 0 8px hsl(var(--accent) / 0.8);
+  }
+
+  /* Glowing Text */
+  .glow-text {
+    text-shadow: 0 0 10px currentColor;
+  }
+
+  /* Panel Styling */
+  .panel {
+    @apply rounded-lg border border-border bg-card p-4;
+    background: linear-gradient(
+      135deg,
+      hsl(var(--card)) 0%,
+      hsl(220 18% 10%) 100%
+    );
+  }
+
+  /* AI Assistant Bubble */
+  .ai-bubble {
+    @apply relative rounded-2xl rounded-bl-sm p-4;
+    background: linear-gradient(
+      135deg,
+      hsl(var(--primary) / 0.2) 0%,
+      hsl(var(--primary) / 0.1) 100%
+    );
+    border: 1px solid hsl(var(--primary) / 0.3);
+  }
+
+  .user-bubble {
+    @apply relative rounded-2xl rounded-br-sm p-4;
+    background: linear-gradient(
+      135deg,
+      hsl(var(--secondary) / 0.2) 0%,
+      hsl(var(--secondary) / 0.1) 100%
+    );
+    border: 1px solid hsl(var(--secondary) / 0.3);
+  }
+
+  /* Mode Badge */
+  .mode-badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium;
+    background: linear-gradient(
+      135deg,
+      hsl(var(--accent) / 0.2) 0%,
+      hsl(var(--accent) / 0.1) 100%
+    );
+    border: 1px solid hsl(var(--accent) / 0.4);
+    color: hsl(var(--accent));
+  }
+
+  /* Power Button */
+  .power-button {
+    @apply relative w-12 h-12 rounded-full cursor-pointer transition-all duration-300;
+    background: radial-gradient(circle, hsl(0 0% 20%) 0%, hsl(0 0% 10%) 100%);
+    box-shadow: 
+      0 4px 8px rgba(0, 0, 0, 0.4),
+      inset 0 2px 4px rgba(255, 255, 255, 0.05);
+  }
+
+  .power-button-on {
+    box-shadow: 
+      0 0 20px hsl(142 90% 50% / 0.5),
+      0 4px 8px rgba(0, 0, 0, 0.4),
+      inset 0 2px 4px rgba(255, 255, 255, 0.05);
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-muted rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/50;
+  }
+}
+
+@layer utilities {
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      opacity: 1;
+      filter: brightness(1);
+    }
+    50% {
+      opacity: 0.8;
+      filter: brightness(1.2);
+    }
+  }
+
+  .animate-blink {
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink {
+    0%, 50% {
+      opacity: 1;
+    }
+    51%, 100% {
+      opacity: 0;
+    }
   }
 }
